@@ -6,18 +6,22 @@
 <title>Gestor de Tareas</title>
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#1A1A1A">
+  <meta name="description" content="Gestor de tareas instalable que funciona sin conexión, con almacenamiento local cifrado y sincronización en segundo plano.">
   <link rel="stylesheet" href="css/estilos.css">
-
-
 </head>
 <body>
   <main class="app">
-    <h1>Gestor de Tareas</h1>
-    <p class="subtitulo">Proyecto base — Electiva PWA, cierre de los Bloques 1 y 2.</p>
+    <header class="app-cab">
+      <div>
+        <h1>Gestor de Tareas</h1>
+        <p class="subtitulo">Electiva PWA · Bloques 1 a 3</p>
+      </div>
+      <span id="estado-conexion" class="pildora pildora--online" role="status">En línea</span>
+    </header>
 
     <form id="form-tarea" class="form-tarea">
       <input type="text" id="input-titulo" placeholder="Nueva tarea..." required>
-      <select id="input-prioridad">
+      <select id="input-prioridad" aria-label="Prioridad">
         <option value="baja">Baja</option>
         <option value="media" selected>Media</option>
         <option value="alta">Alta</option>
@@ -25,8 +29,71 @@
       <button type="submit">Agregar</button>
     </form>
 
+    <!-- Sesión 24: adjuntos de dispositivo -->
+    <section class="panel-adjuntos" aria-label="Adjuntos">
+      <button type="button" id="btn-foto" class="ghost">📷 Añadir foto</button>
+      <button type="button" id="btn-ubicacion" class="ghost">📍 Añadir ubicación</button>
+      <span id="estado-adjunto" class="estado-adjunto" role="status"></span>
+    </section>
+
+    <div id="previa-adjunto" class="previa-adjunto oculto">
+      <img id="previa-foto" alt="Foto adjunta">
+      <button type="button" id="btn-quitar-foto" class="ghost">Quitar foto</button>
+    </div>
+
     <ul id="lista-tareas" class="lista-tareas"></ul>
+    <p id="contador" class="contador"></p>
+
+    <!-- Sesión 26: avisos y sincronización -->
+    <section class="panel-avisos" aria-label="Avisos y sincronización">
+      <h2>Avisos y sincronización</h2>
+      <div class="fila-botones">
+        <button type="button" id="btn-avisos">🔔 Activar avisos</button>
+        <button type="button" id="btn-sync">🔄 Sincronizar ahora</button>
+      </div>
+      <p id="estado-avisos" class="estado" role="status">Aún no diste permiso para los avisos.</p>
+    </section>
+
+    <!-- Sesión 22: cifrado de la nota privada -->
+    <section class="panel-cifrado" aria-label="Nota privada cifrada">
+      <h2>Nota privada cifrada</h2>
+      <div class="fila-botones">
+        <input type="password" id="input-contrasena" placeholder="Contraseña de la nota" autocomplete="off">
+        <button type="button" id="btn-cifrado">🔐 Preparar cifrado</button>
+      </div>
+      <p id="estado-cifrado" class="estado" role="status">Sin cifrado: la nota se guarda tal cual.</p>
+    </section>
+
+    <!-- Sesión 25: sensores -->
+    <section class="panel-sensores" aria-label="Sensores de movimiento">
+      <h2>Sensor de orientación</h2>
+      <div class="fila-botones">
+        <button type="button" id="btn-sensores">Activar sensor</button>
+        <button type="button" id="btn-calibrar" disabled>Calibrar</button>
+      </div>
+      <p id="estado-sensores" class="estado" role="status">Sin activar.</p>
+    </section>
   </main>
+
+  <!-- Cámara (Sesión 24) -->
+  <dialog id="dlg-camara" class="dialogo">
+    <h2>Foto para la tarea</h2>
+    <video id="video-camara" autoplay playsinline muted></video>
+    <div class="fila-botones">
+      <button type="button" id="btn-capturar" class="primario">Capturar</button>
+      <button type="button" id="btn-cerrar-camara" class="ghost">Cancelar</button>
+    </div>
+    <p id="estado-camara" class="estado" role="status"></p>
+  </dialog>
+
+  <!-- Nota cifrada (Sesión 22) -->
+  <dialog id="dlg-nota" class="dialogo">
+    <h2>Nota privada</h2>
+    <p id="nota-descifrada" class="nota-texto"></p>
+    <div class="fila-botones">
+      <button type="button" id="btn-cerrar-nota" class="primario">Cerrar</button>
+    </div>
+  </dialog>
 
   <script type="module" src="app.js"></script>
 </body>
